@@ -1,7 +1,7 @@
 {
   "name": "@yup-field-props/react",
   "version": "1.0.0-alpha.1",
-  "description": "",
+  "description": "React hook to get the yup validation properties of a field",
   "files": [
     "dist/"
   ],
