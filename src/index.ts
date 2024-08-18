@@ -1,7 +1,7 @@
 export { useFieldDescription } from './useFieldDescription'
-export { useFieldProps } from './useFieldDescriptionProps'
-export { SchemaProvider, useSchemaContext } from './YupSchemaProvider'
-export type { SchemaProviderProps } from './YupSchemaProvider'
+export { useFieldProps } from './useFieldProps'
+export { SchemaProvider, useSchemaContext } from './SchemaProvider'
+export type { SchemaProviderProps } from './SchemaProvider'
 export {
   AllFieldProps,
   NumberFieldProps,

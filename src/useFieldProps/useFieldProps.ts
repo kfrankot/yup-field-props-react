@@ -5,7 +5,7 @@ import {
   getFieldPropsFromDescription,
 } from '@yup-field-props/base'
 import { useFieldDescription } from '../useFieldDescription'
-import { useSchemaContext } from '../YupSchemaProvider'
+import { useSchemaContext } from '../SchemaProvider'
 import { SchemaDescription } from 'yup'
 
 export const useFieldProps = <T extends FieldProps = AllFieldProps>(

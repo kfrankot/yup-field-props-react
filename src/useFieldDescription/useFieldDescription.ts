@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { useSchemaContext } from '../YupSchemaProvider'
+import { useSchemaContext } from '../SchemaProvider'
 import {
   getFieldPathsFromName,
   getFieldDescriptionFromPaths,
