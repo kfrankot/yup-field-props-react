@@ -24,14 +24,26 @@
     "prepublishOnly": "npm run test:coverage",
     "setup-local": "cd ../yup-field-props-base && npm link && cd ../yup-field-props-react && npm link @yup-field-props/base && npm link"
   },
-  "keywords": [],
+  "keywords": [
+    "yup",
+    "field",
+    "props",
+    "react",
+    "hook",
+    "validation",
+    "schema",
+    "describe"
+  ],
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/kfrankot/yup-field-props-react.git"
   },
   "author": "Kevin Frankot",
   "license": "MIT",
-  "homepage": "",
+  "bugs": {
+    "url": "https://github.com/kfrankot/yup-field-props-react/issues"
+  },
+  "homepage": "https://github.com/kfrankot/yup-field-props-react#readme",
   "devDependencies": {
     "@babel/plugin-transform-nullish-coalescing-operator": "^7.24.7",
     "@babel/plugin-transform-optional-chaining": "^7.24.7",

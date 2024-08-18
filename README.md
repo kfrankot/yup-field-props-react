@@ -1,10 +1,10 @@
 # yup-field-props-react
 
-A React library for managing form field properties using Yup schemas.
+A React library to simplify the collection of validation properties of a Yup schema field.
 
 ## Description
 
-`yup-field-props-react` is a library that helps you manage form field properties in React applications using Yup schemas. It provides hooks and components to easily integrate Yup schema definitions into your form components, with the schema as the single source of truth. While this is possible with `yup` out of the box, `yup-field-props-react` simplifies the process
+`yup-field-props-react` is a library that helps you collect form field properties in React applications using Yup schemas. It provides the `useFieldProps` hook and `SchemaProvider` component to easily integrate Yup schema definitions into your form components, with the schema as the single source of truth. While this is possible with `yup` out of the box, `yup-field-props-react` simplifies the process.
 
 ## Installation
 
