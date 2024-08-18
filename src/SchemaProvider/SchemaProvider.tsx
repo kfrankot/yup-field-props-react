@@ -28,10 +28,10 @@ export const SchemaProvider = ({
   context: contextProp,
   children,
 }: SchemaProviderProps) => {
-  const [, setRandom] = useState(Math.random())
+  const [, setRandom] = useState({})
 
   const forceUpdate = useCallback(() => {
-    setRandom(Math.random())
+    setRandom({})
   }, [])
 
   const values = typeof valuesProp === 'function' ? valuesProp() : valuesProp
