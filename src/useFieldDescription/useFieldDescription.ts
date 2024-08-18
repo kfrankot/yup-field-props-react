@@ -3,7 +3,7 @@ import { useSchemaContext } from '../SchemaProvider'
 import {
   getFieldPathsFromName,
   getFieldDescriptionFromPaths,
-} from '@yup-field-props/base'
+} from 'yup-field-props-base'
 
 export const useFieldDescription = (name: string) => {
   const { schema, values, context } = useSchemaContext()

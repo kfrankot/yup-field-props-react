@@ -4,7 +4,7 @@ import { useSchemaContext } from '../SchemaProvider'
 import {
   getFieldPathsFromName,
   getFieldDescriptionFromPaths,
-} from '@yup-field-props/base'
+} from 'yup-field-props-base'
 
 // Mock the useSchemaContext hook
 jest.mock('../SchemaProvider', () => ({
@@ -12,7 +12,7 @@ jest.mock('../SchemaProvider', () => ({
 }))
 
 // Mock the getFieldPathsFromName and getFieldDescriptionFromPaths functions
-jest.mock('@yup-field-props/base', () => ({
+jest.mock('yup-field-props-base', () => ({
   getFieldPathsFromName: jest.fn(),
   getFieldDescriptionFromPaths: jest.fn(),
 }))

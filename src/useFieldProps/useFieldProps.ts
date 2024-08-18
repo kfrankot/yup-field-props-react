@@ -3,7 +3,7 @@ import {
   AllFieldProps,
   FieldProps,
   getFieldPropsFromDescription,
-} from '@yup-field-props/base'
+} from 'yup-field-props-base'
 import { useFieldDescription } from '../useFieldDescription'
 import { useSchemaContext } from '../SchemaProvider'
 import { SchemaDescription } from 'yup'

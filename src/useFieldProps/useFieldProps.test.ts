@@ -2,7 +2,7 @@ import { renderHook } from '@testing-library/react'
 import { useFieldProps } from './useFieldProps'
 import { useFieldDescription } from '../useFieldDescription'
 import { useSchemaContext } from '../SchemaProvider'
-import { getFieldPropsFromDescription } from '@yup-field-props/base'
+import { getFieldPropsFromDescription } from 'yup-field-props-base'
 import { SchemaDescription } from 'yup'
 
 // Mock the useFieldDescription hook
@@ -16,7 +16,7 @@ jest.mock('../SchemaProvider', () => ({
 }))
 
 // Mock the getFieldPropsFromDescription function
-jest.mock('@yup-field-props/base', () => ({
+jest.mock('yup-field-props-base', () => ({
   getFieldPropsFromDescription: jest.fn(),
 }))
 
