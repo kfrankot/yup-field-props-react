@@ -15,17 +15,18 @@ export default [
       file: 'dist/index.js',
       format: 'es',
     },
+    external: ['react', 'yup', '@yup-field-props/base'],
     plugins: [
       license({
         banner,
       }),
       includePaths({
-        extensions: ['.ts', '.js'],
+        extensions: ['.ts', '.tsx', '.js', '.jsx'],
       }),
       babel({
         babelHelpers: 'runtime',
         exclude: 'node_modules/**',
-        extensions: ['.ts', '.js'],
+        extensions: ['.ts', '.tsx', '.js', '.jsx'],
       }),
       terser(),
     ],

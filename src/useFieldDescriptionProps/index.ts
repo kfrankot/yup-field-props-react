@@ -1,1 +1,1 @@
-export { useYupFieldProps } from './useFieldDescriptionProps'
+export { useFieldProps } from './useFieldDescriptionProps'

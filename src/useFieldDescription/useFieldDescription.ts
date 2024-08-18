@@ -1,20 +1,24 @@
 import { useMemo } from 'react'
-import { useYupSchemaContext } from '../YupSchemaProvider'
+import { useSchemaContext } from '../YupSchemaProvider'
 import {
-  getFieldDescriptionFromPath,
-  getFieldDescriptionPathFromName,
+  getFieldPathsFromName,
+  getFieldDescriptionFromPaths,
 } from '@yup-field-props/base'
 
-export const useYupFieldDescription = (name: string) => {
-  const { description } = useYupSchemaContext()
+export const useFieldDescription = (name: string) => {
+  const { schema, values, context } = useSchemaContext()
 
-  const pathToDescription = useMemo(() => {
-    return getFieldDescriptionPathFromName(name)
+  const { valuePath, parentPath } = useMemo(() => {
+    return getFieldPathsFromName(name)
   }, [name])
 
   return useMemo(() => {
-    return description
-      ? getFieldDescriptionFromPath(pathToDescription, description)
-      : null
-  }, [description, pathToDescription])
+    return getFieldDescriptionFromPaths({
+      valuePath,
+      parentPath,
+      schema,
+      values,
+      context,
+    })
+  }, [values, name, valuePath, parentPath, schema, context])
 }

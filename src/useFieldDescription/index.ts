@@ -1,1 +1,1 @@
-export { useYupFieldDescription } from './useFieldDescription'
+export { useFieldDescription } from './useFieldDescription'

@@ -1,72 +1,57 @@
 import React, {
   useContext,
+  useState,
   createContext,
   useMemo,
-  useRef,
   ReactNode,
   useCallback,
 } from 'react'
-import { AnyObject, ObjectSchema, SchemaObjectDescription } from 'yup'
-import fastDeepEqual from 'fast-deep-equal/es6'
+import { AnyObject, ObjectSchema, object } from 'yup'
 
 // TODO: Add support for generics
-export type YupSchemaProviderProps = {
+export type SchemaProviderProps = {
   schema: ObjectSchema<any, AnyObject, any, ''>
-  values?: any
-  getValues?: () => any
-  disableDeepEqualCheck?: boolean
-  children: ReactNode
+  values: AnyObject | (() => AnyObject)
+  context?: AnyObject | (() => AnyObject)
+  children?: ReactNode
 }
 
-export const YupSchemaContext = createContext<{
-  description: SchemaObjectDescription | null
-  forceUpdate: () => void
-}>({ description: null, forceUpdate: () => {} })
+export const SchemaContext = createContext<
+  Omit<SchemaProviderProps, 'children'> & {
+    forceUpdate: () => void
+  }
+>({ schema: object(), values: {}, context: undefined, forceUpdate: () => {} })
 
-export const YupSchemaProvider = ({
+export const SchemaProvider = ({
   schema,
   values: valuesProp,
-  getValues,
-  disableDeepEqualCheck,
+  context: contextProp,
   children,
-}: YupSchemaProviderProps) => {
-
-  // Implement a forceUpdate function to force re-render
-  const [, setRandom] = React.useState(Math.random())
+}: SchemaProviderProps) => {
+  const [, setRandom] = useState(Math.random())
 
   const forceUpdate = useCallback(() => {
     setRandom(Math.random())
   }, [])
 
-  const values = getValues ? getValues() : valuesProp
+  const values = typeof valuesProp === 'function' ? valuesProp() : valuesProp
+  const yupContext =
+    typeof contextProp === 'function' ? contextProp() : contextProp
   const context = useMemo(
     () => ({
-      description: schema.describe({ value: values }),
+      schema,
+      values,
+      context: yupContext,
       forceUpdate,
     }),
-    [schema, values, forceUpdate],
+    [schema, values, yupContext, forceUpdate],
   )
 
-  // Its very likely the describe method will be the exact same despite the schema and values changing
-  // so provide some protection to avoid unnecessary re-renders on every input change
-
-  // TODO: Need to verify performance improvement
-  const contextRef = useRef(context)
-  if (
-    disableDeepEqualCheck ||
-    (contextRef.current !== context &&
-      !fastDeepEqual(contextRef.current, context))
-  ) {
-    contextRef.current = context
-  }
-
   return (
-    <YupSchemaContext.Provider value={contextRef.current}>
-      {children}
-    </YupSchemaContext.Provider>
+    <SchemaContext.Provider value={context}>{children}</SchemaContext.Provider>
   )
 }
 
-export const useYupSchemaContext = () => {
-  return useContext(YupSchemaContext)
+export const useSchemaContext = () => {
+  return useContext(SchemaContext)
 }
