@@ -69,8 +69,7 @@
     "@yup-field-props/base": "file:../yup-field-props-base/yup-field-props-base-1.0.0-alpha.1.tgz"
   },
   "peerDependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "yup": "^1.4.0"
+    "react": "^18.0.0",
+    "yup": "^1.0.0"
   }
 }
