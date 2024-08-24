@@ -67,9 +67,9 @@ const schema = yup.object().shape({
 const NumberInput = (props: InputHTMLAttributes<HTMLInputElement>) => {
   const fieldPropsResult = useFieldProps<NumberFieldProps>(props.name || '')
   const { required, min, max, lessThan, moreThan } = fieldPropsResult
-  let minMessage = min ? `Min ${min}` : moreThan ? `More than ${moreThan}` : ''
-  let maxMessage = max ? `Max ${max}` : lessThan ? `Less than ${lessThan}` : ''
-  const placeholder = [minMessage, maxMessage].filter(Boolean).join(' and ')
+  const minMsg = min ? `Min ${min}` : moreThan ? `More than ${moreThan}` : ''
+  const maxMsg = max ? `Max ${max}` : lessThan ? `Less than ${lessThan}` : ''
+  const placeholder = [minMsg, maxMsg].filter(Boolean).join(' and ')
 
   return (
     <input
