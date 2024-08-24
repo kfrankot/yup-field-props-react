@@ -4,9 +4,12 @@ import {
   getFieldPathsFromName,
   getFieldDescriptionFromPaths,
 } from 'yup-field-props-base'
+import { valueOrFunction } from '../utils'
 
 export const useFieldDescription = (name: string) => {
   const { schema, values, context } = useSchemaContext()
+  const resolvedValues = valueOrFunction(values)
+  const resolvedContext = valueOrFunction(context)
 
   const { valuePath, parentPath } = useMemo(() => {
     return getFieldPathsFromName(name)
@@ -17,8 +20,8 @@ export const useFieldDescription = (name: string) => {
       valuePath,
       parentPath,
       schema,
-      values,
-      context,
+      values: resolvedValues,
+      context: resolvedContext,
     })
-  }, [values, name, valuePath, parentPath, schema, context])
+  }, [resolvedValues, name, valuePath, parentPath, schema, resolvedContext])
 }

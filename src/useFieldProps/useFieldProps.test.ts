@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react'
+import { renderHook, act } from '@testing-library/react'
 import { useFieldProps } from './useFieldProps'
 import { useFieldDescription } from '../useFieldDescription'
 import { useSchemaContext } from '../SchemaProvider'
@@ -49,13 +49,18 @@ describe('useFieldProps', () => {
     })
     expect(result.current).toEqual({
       ...mockFieldProps,
-      forceUpdate: mockForceUpdate,
+      forceFieldUpdate: expect.any(Function),
+      forceFormUpdate: mockForceUpdate,
     })
   })
 
   it('updates the field props when the field name changes', () => {
-    const mockFieldProps1 = {} // mock field props object 1
-    const mockFieldProps2 = {} // mock field props object 2
+    const mockFieldProps1 = {
+      min: 1,
+    } // mock field props object 1
+    const mockFieldProps2 = {
+      min: 2,
+    } // mock field props object 2
 
     ;(getFieldPropsFromDescription as jest.Mock)
       .mockReturnValueOnce(mockFieldProps1)
@@ -67,14 +72,16 @@ describe('useFieldProps', () => {
 
     expect(result.current).toEqual({
       ...mockFieldProps1,
-      forceUpdate: mockForceUpdate,
+      forceFieldUpdate: expect.any(Function),
+      forceFormUpdate: mockForceUpdate,
     })
 
     rerender({ name: 'mockFieldName2' })
 
     expect(result.current).toEqual({
       ...mockFieldProps2,
-      forceUpdate: mockForceUpdate,
+      forceFieldUpdate: expect.any(Function),
+      forceFormUpdate: mockForceUpdate,
     })
   })
 
@@ -92,7 +99,8 @@ describe('useFieldProps', () => {
 
     expect(result.current).toEqual({
       ...mockFieldProps1,
-      forceUpdate: mockForceUpdate,
+      forceFieldUpdate: expect.any(Function),
+      forceFormUpdate: mockForceUpdate,
     })
 
     // Change schema, values, or context
@@ -106,7 +114,78 @@ describe('useFieldProps', () => {
 
     expect(result.current).toEqual({
       ...mockFieldProps2,
+      forceFieldUpdate: expect.any(Function),
+      forceFormUpdate: mockForceUpdate,
+    })
+  })
+
+  it('handles values and context as functions and applies forced updates correctly', () => {
+    const mockFieldDescription = {} as SchemaDescription
+    const mockValuesFunction = jest.fn().mockReturnValue({ key: 'value' })
+    const mockContextFunction = jest.fn().mockReturnValue({ key: 'context' })
+    const mockForceUpdate = jest.fn()
+    const mockFieldProps = {} // mock field props object
+
+    ;(useFieldDescription as jest.Mock).mockReturnValue(mockFieldDescription)
+    ;(useSchemaContext as jest.Mock).mockReturnValue({
+      values: mockValuesFunction,
+      context: mockContextFunction,
       forceUpdate: mockForceUpdate,
+    })
+    ;(getFieldPropsFromDescription as jest.Mock).mockReturnValue(mockFieldProps)
+
+    const { result } = renderHook(() => useFieldProps('mockFieldName'))
+
+    expect(mockValuesFunction).toHaveBeenCalled()
+    expect(mockContextFunction).toHaveBeenCalled()
+    expect(getFieldPropsFromDescription).toHaveBeenCalledWith({
+      name: 'mockFieldName',
+      fieldDescription: mockFieldDescription,
+      values: { key: 'value' },
+      context: { key: 'context' },
+    })
+    expect(result.current).toEqual({
+      ...mockFieldProps,
+      forceFieldUpdate: expect.any(Function),
+      forceFormUpdate: mockForceUpdate,
+    })
+  })
+
+  it('triggers re-render and updates field props when forceFieldUpdate is called', () => {
+    const mockFieldProps1 = { prop: 'initial' }
+    const mockFieldProps2 = { prop: 'updated' }
+
+    ;(getFieldPropsFromDescription as jest.Mock)
+      .mockReturnValueOnce(mockFieldProps1)
+      .mockReturnValueOnce(mockFieldProps2)
+    ;(useSchemaContext as jest.Mock)
+      .mockReturnValueOnce({
+        values: () => {},
+        context: () => {},
+        forceUpdate: mockForceUpdate,
+      })
+      .mockReturnValueOnce({
+        values: () => {},
+        context: () => {},
+        forceUpdate: mockForceUpdate,
+      })
+
+    const { result } = renderHook(() => useFieldProps('mockFieldName'))
+
+    expect(result.current).toEqual({
+      ...mockFieldProps1,
+      forceFieldUpdate: expect.any(Function),
+      forceFormUpdate: mockForceUpdate,
+    })
+
+    act(() => {
+      result.current.forceFieldUpdate()
+    })
+
+    expect(result.current).toEqual({
+      ...mockFieldProps2,
+      forceFieldUpdate: expect.any(Function),
+      forceFormUpdate: mockForceUpdate,
     })
   })
 })

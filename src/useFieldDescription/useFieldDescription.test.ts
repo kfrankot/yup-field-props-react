@@ -18,21 +18,12 @@ jest.mock('yup-field-props-base', () => ({
 }))
 
 describe('useFieldDescription', () => {
-  const mockSchema = {
-    /* mock schema object */
-  }
-  const mockValues = {
-    /* mock values object */
-  }
-  const mockContext = {
-    /* mock context object */
-  }
-
   beforeEach(() => {
+    jest.clearAllMocks()
     ;(useSchemaContext as jest.Mock).mockReturnValue({
-      schema: mockSchema,
-      values: mockValues,
-      context: mockContext,
+      schema: {},
+      values: {},
+      context: {},
     })
   })
 
@@ -56,9 +47,9 @@ describe('useFieldDescription', () => {
     expect(getFieldDescriptionFromPaths).toHaveBeenCalledWith({
       valuePath: 'mockValuePath',
       parentPath: 'mockParentPath',
-      schema: mockSchema,
-      values: mockValues,
-      context: mockContext,
+      schema: {},
+      values: {},
+      context: {},
     })
     expect(result.current).toBe(mockFieldDescription)
   })
@@ -105,12 +96,8 @@ describe('useFieldDescription', () => {
       valuePath: 'mockValuePath',
       parentPath: 'mockParentPath',
     }
-    const mockFieldDescription1 = {
-      /* mock field description object 1 */
-    }
-    const mockFieldDescription2 = {
-      /* mock field description object 2 */
-    }
+    const mockFieldDescription1 = {}
+    const mockFieldDescription2 = {}
 
     ;(getFieldPathsFromName as jest.Mock).mockReturnValue(mockFieldPaths)
     ;(getFieldDescriptionFromPaths as jest.Mock)
@@ -125,19 +112,41 @@ describe('useFieldDescription', () => {
 
     // Change schema, values, or context
     ;(useSchemaContext as jest.Mock).mockReturnValue({
-      schema: {
-        /* new mock schema object */
-      },
-      values: {
-        /* new mock values object */
-      },
-      context: {
-        /* new mock context object */
-      },
+      schema: {},
+      values: {},
+      context: {},
     })
 
     rerender()
 
     expect(result.current).toBe(mockFieldDescription2)
+  })
+
+  it('memoizes the field description to avoid unnecessary recalculations', () => {
+    const mockFieldPaths = {
+      valuePath: 'mockValuePath',
+      parentPath: 'mockParentPath',
+    }
+    const mockFieldDescription = {
+      /* mock field description object */
+    }
+
+    ;(getFieldPathsFromName as jest.Mock).mockReturnValue(mockFieldPaths)
+    ;(getFieldDescriptionFromPaths as jest.Mock).mockReturnValue(
+      mockFieldDescription,
+    )
+
+    const { result, rerender } = renderHook(() =>
+      useFieldDescription('mockFieldName'),
+    )
+
+    expect(result.current).toBe(mockFieldDescription)
+
+    // Rerender with the same props to check memoization
+    rerender()
+
+    expect(getFieldPathsFromName).toHaveBeenCalledTimes(1)
+    expect(getFieldDescriptionFromPaths).toHaveBeenCalledTimes(1)
+    expect(result.current).toBe(mockFieldDescription)
   })
 })

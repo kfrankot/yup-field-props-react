@@ -1,12 +1,6 @@
-import React, {
-  useContext,
-  useState,
-  createContext,
-  useMemo,
-  ReactNode,
-  useCallback,
-} from 'react'
+import React, { useContext, createContext, useMemo, ReactNode } from 'react'
 import { AnyObject, ObjectSchema, object } from 'yup'
+import { useForceUpdate, valueOrFunction } from '../utils'
 
 // TODO: Add support for generics
 export type SchemaProviderProps = {
@@ -16,35 +10,41 @@ export type SchemaProviderProps = {
   children?: ReactNode
 }
 
-export const SchemaContext = createContext<
-  Omit<SchemaProviderProps, 'children'> & {
-    forceUpdate: () => void
-  }
->({ schema: object(), values: {}, context: undefined, forceUpdate: () => {} })
+export type SchemaProviderContext = Omit<SchemaProviderProps, 'children'> & {
+  forceUpdate: () => void
+  resolvedValues: AnyObject
+  resolvedContext?: AnyObject
+}
+
+export const SchemaContext = createContext<SchemaProviderContext>({
+  schema: object(),
+  values: {},
+  context: undefined,
+  resolvedValues: {},
+  resolvedContext: undefined,
+  forceUpdate: () => {},
+})
 
 export const SchemaProvider = ({
   schema,
-  values: valuesProp,
-  context: contextProp,
+  values,
+  context: yupContext,
   children,
 }: SchemaProviderProps) => {
-  const [, setRandom] = useState({})
+  const forceUpdate = useForceUpdate()
 
-  const forceUpdate = useCallback(() => {
-    setRandom({})
-  }, [])
-
-  const values = typeof valuesProp === 'function' ? valuesProp() : valuesProp
-  const yupContext =
-    typeof contextProp === 'function' ? contextProp() : contextProp
+  const resolvedValues = valueOrFunction(values)
+  const resolvedContext = valueOrFunction(yupContext)
   const context = useMemo(
     () => ({
       schema,
       values,
       context: yupContext,
+      resolvedValues,
+      resolvedContext,
       forceUpdate,
     }),
-    [schema, values, yupContext, forceUpdate],
+    [schema, values, yupContext, resolvedValues, resolvedContext, forceUpdate],
   )
 
   return (

@@ -7,22 +7,34 @@ import {
 import { useFieldDescription } from '../useFieldDescription'
 import { useSchemaContext } from '../SchemaProvider'
 import { SchemaDescription } from 'yup'
+import { useForceUpdate, valueOrFunction } from '../utils'
 
 export const useFieldProps = <T extends FieldProps = AllFieldProps>(
   name: string,
 ) => {
   const fieldDescription = useFieldDescription(name)
-  const { values, context, forceUpdate } = useSchemaContext()
+  const forceFieldUpdate = useForceUpdate()
+  const { values, context, forceUpdate: forceFormUpdate } = useSchemaContext()
+  const resolvedValues = valueOrFunction(values)
+  const resolvedContext = valueOrFunction(context)
 
   return useMemo(() => {
     return {
       ...getFieldPropsFromDescription<T>({
         name,
         fieldDescription: fieldDescription as SchemaDescription,
-        values,
-        context,
+        values: resolvedValues,
+        context: resolvedContext,
       }),
-      forceUpdate,
+      forceFieldUpdate,
+      forceFormUpdate,
     }
-  }, [fieldDescription, values, context, name, forceUpdate])
+  }, [
+    fieldDescription,
+    values,
+    context,
+    name,
+    forceFieldUpdate,
+    forceFormUpdate,
+  ])
 }
