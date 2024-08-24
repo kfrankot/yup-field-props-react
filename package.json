@@ -1,14 +1,21 @@
 {
   "name": "yup-field-props-react",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "description": "React hook to get the yup validation properties of a field",
   "files": [
     "dist/"
   ],
   "type": "module",
-  "main": "dist/index.js",
-  "module": "dist/index.ts",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.cjs.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "scripts": {
     "test": "jest --runInBand",
     "test:watch": "npm run test -- --watch",
@@ -51,6 +58,8 @@
     "@babel/preset-env": "^7.24.7",
     "@babel/preset-react": "^7.24.7",
     "@babel/preset-typescript": "^7.24.7",
+    "@hookform/resolvers": "^3.9.0",
+    "@mui/material": "^5.16.7",
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-terser": "^0.4.4",
     "@testing-library/jest-dom": "^6.4.8",
@@ -68,15 +77,15 @@
     "jest-environment-jsdom": "^29.7.0",
     "prettier": "^3.3.2",
     "react": "^18.3.1",
+    "react-hook-form": "^7.53.0",
     "rollup": "^4.18.0",
     "rollup-plugin-includepaths": "^0.2.4",
     "rollup-plugin-license": "^3.5.2",
-    "ts-jest": "^29.1.5",
     "typescript": "^5.5.3",
     "yup": "^1.4.0"
   },
   "dependencies": {
-    "yup-field-props-base": "1.0.0-alpha.1"
+    "yup-field-props-base": "1.0.0-alpha.4"
   },
   "peerDependencies": {
     "react": "^18.0.0",
