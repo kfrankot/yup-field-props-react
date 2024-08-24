@@ -11,10 +11,16 @@ Kevin Frankot - <%= pkg.name %> v<%= pkg.version %>
 export default [
   {
     input: 'src/index.ts',
-    output: {
-      file: 'dist/index.js',
-      format: 'es',
-    },
+    output: [
+      {
+        file: 'dist/index.cjs.js',
+        format: 'cjs',
+      },
+      {
+        file: 'dist/index.esm.js',
+        format: 'esm',
+      },
+    ],
     external: ['react', 'yup', 'yup-field-props-base'],
     plugins: [
       license({
