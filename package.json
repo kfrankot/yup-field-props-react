@@ -1,6 +1,6 @@
 {
   "name": "yup-field-props-react",
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0-beta.3",
   "description": "React hook to get the yup validation properties of a field",
   "files": [
     "dist/"
@@ -87,7 +87,7 @@
     "yup": "^1.4.0"
   },
   "dependencies": {
-    "yup-field-props-base": "1.0.0-beta.1"
+    "yup-field-props-base": "1.0.0-beta.2"
   },
   "peerDependencies": {
     "react": "^18.0.0",
