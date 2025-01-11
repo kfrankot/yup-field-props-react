@@ -1,6 +1,6 @@
 {
   "name": "yup-field-props-react",
-  "version": "1.0.0-beta.4",
+  "version": "1.0.0-beta.5",
   "description": "React hook to get the yup validation properties of a field",
   "files": [
     "dist/"
@@ -90,7 +90,7 @@
     "yup-field-props-base": "1.0.0-beta.3"
   },
   "peerDependencies": {
-    "react": "^18.0.0",
+    "react": "^16.8.0 || ^17 || ^18 || ^19",
     "yup": "^1.0.0"
   }
 }
