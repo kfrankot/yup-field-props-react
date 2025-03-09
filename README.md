@@ -1,22 +1,22 @@
 # yup-field-props-react
 
-A React library to simplify the collection of validation properties of a Yup schema field.
+A React library that simplifies extracting validation properties from Yup schemas for form fields.
 
 ## Description
 
-`yup-field-props-react` is a library that helps you collect form field properties in React applications using Yup schemas. It provides the `useFieldProps` hook and `SchemaProvider` component to easily integrate Yup schema definitions into your form components, with the schema as the single source of truth. While this is possible with `yup` out of the box, `yup-field-props-react` simplifies the process.
+`yup-field-props-react` helps you extract form field validation properties in React applications using Yup schemas. It provides the `useFieldProps` hook and `SchemaProvider` component to easily integrate Yup schema definitions into your form components, maintaining the schema as the single source of truth. While similar functionality is possible with `yup` directly, this library significantly simplifies the process. For integration with `react-hook-form`, consider using [react-hook-form-yup](https://github.com/kfrankot/react-hook-form-yup), which is built on top of this library.
 
 ## Installation
 
-To install the library:
+Install the library using npm:
 
 ```bash
 npm install yup-field-props-react
 ```
 
-## useFieldProps hook
+## useFieldProps Hook
 
-Use the `useFieldProps` hook to pickup the validation properties of the field based on the schema and current values
+Use the `useFieldProps` hook to extract validation properties from a schema field based on the current form values:
 
 ```typescript
 import { useFieldProps } from 'yup-field-props-react'
@@ -24,15 +24,15 @@ import { useFieldProps } from 'yup-field-props-react'
 const { min, max, integer, ...others } = useFieldProps('path.to.field')
 ```
 
-## SchemaProvider component
+## SchemaProvider Component
 
-Use `SchemaProvider` componet to provide the validation schema and current form values to be used by `useFieldProps`
+Use the `SchemaProvider` component to provide the validation schema and current form values to be used by `useFieldProps`:
 
 ```tsx
 import { SchemaProvider } from 'yup-field-props-react'
 
 const schema = yup.object().shape({
-  /* etc... */
+  /* define your schema */
 })
 const formValues = getFormValuesFromSomewhere()
 
@@ -43,7 +43,7 @@ return (
 )
 ```
 
-## Simple practical example
+## Basic Example
 
 ```tsx
 import { useState, InputHTMLAttributes } from 'react'
@@ -65,8 +65,11 @@ const schema = yup.object().shape({
 })
 
 const NumberInput = (props: InputHTMLAttributes<HTMLInputElement>) => {
-  const fieldPropsResult = useFieldProps<NumberFieldProps>(props.name || '')
-  const { required, min, max, lessThan, moreThan } = fieldPropsResult
+  // Get validation props from the schema with useFieldProps hook
+  const { required, min, max, lessThan, moreThan } =
+    useFieldProps<NumberFieldProps>(props.name || '')
+
+  // Construct a placeholder message based on the validation props
   const minMsg = min ? `Min ${min}` : moreThan ? `More than ${moreThan}` : ''
   const maxMsg = max ? `Max ${max}` : lessThan ? `Less than ${lessThan}` : ''
   const placeholder = [minMsg, maxMsg].filter(Boolean).join(' and ')
@@ -75,6 +78,7 @@ const NumberInput = (props: InputHTMLAttributes<HTMLInputElement>) => {
     <input
       {...props}
       style={{ display: 'block', width: 250 }}
+      // Set required prop based on the required prop from useFieldProps
       required={required}
       placeholder={placeholder}
     />
@@ -89,6 +93,7 @@ const MyForm = () => {
   }
 
   return (
+    // Attach schema and form values to the SchemaProvider
     <SchemaProvider schema={schema} values={values}>
       <NumberInput
         name="minSize"
@@ -109,6 +114,6 @@ const MyForm = () => {
 export default MyForm
 ```
 
-## Complex example
+## Advanced Example
 
-For a more complex example utilizing `@mui/material` and `react-hook-form`, see example [examples/react-hook-form.tsx](examples/react-hook-form.tsx)
+For a more complex example using `@mui/material` and `react-hook-form`, see [examples/react-hook-form.tsx](examples/react-hook-form.tsx)
